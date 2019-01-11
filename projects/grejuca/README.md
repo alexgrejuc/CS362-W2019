@@ -1,1 +1,1 @@
-Alex Grejuc | grejuca 
+This is my assignment-1 submission!
