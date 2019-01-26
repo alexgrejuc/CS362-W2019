@@ -750,7 +750,7 @@ int adventurerEffect(int currentPlayer, int tempHand[], int cardDrawn, struct ga
     }
     drawCard(currentPlayer, state);
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer] - 1]; //top card of hand is most recently drawn card.
-    if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+    if (cardDrawn == copper) // **BUG** should also check for silver and gold 
       drawnTreasure++;
     else
     {
@@ -780,10 +780,8 @@ int councilRoomEffect(int currentPlayer, int handPos, struct gameState *state){
     //Each other player draws a card
     for (int i = 0; i < state->numPlayers; i++)
     {
-      if (i != currentPlayer)
-      {
-        drawCard(i, state);
-      }
+      //if (i != currentPlayer)
+        drawCard(i, state); // ** BUG ** should exclude the current player from drawing a card
     }
 
     //put played card in played card pile
@@ -868,10 +866,11 @@ int mineEffect(int choice1, int choice2, int currentPlayer, int handPos, struct 
       return -1;
     }
 
-    if ((getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2))
+    // ** BUG ** the gained treasure should not exceed the value of the original by 3 coins 
+    /*if ((getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2))
     {
       return -1;
-    }
+    }*/
 
     gainCard(choice2, state, 2, currentPlayer);
 
@@ -893,7 +892,7 @@ int mineEffect(int choice1, int choice2, int currentPlayer, int handPos, struct 
 
 int smithyEffect(int currentPlayer, int handPos, struct gameState *state){
     //+3 Cards
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
       drawCard(currentPlayer, state);
     }
