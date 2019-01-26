@@ -1,0 +1,7 @@
+*.gcda
+*.gcno
+*.o 
+playdom
+player
+*.swp
+
