@@ -25,7 +25,7 @@ Creating 'dominion.c.gcov'
 	Test 3 PASS Discard count unchanged (last card in hand)
 	Test 4 PASS Hand count decreases by 1 (last card in hand)
 	Test 5 PASS Discard count unchanged (only 1 card in hand)
-	Test 6 PASS Hand count decreases by 1 (only card in hand)
+	Test 6 FAIL Hand count decreases by 1 (only card in hand) | EXPECTED: -1 | ACTUAL: 0
 	Test 7 FAIL Discard count increases by 1 (not trashed) | EXPECTED: 1 | ACTUAL: 0
 	Test 8 PASS Hand count decreases by 1 (not trashed)
 	Test 9 FAIL other player hand unchanged | EXPECTED: 0 | ACTUAL: -255
@@ -35,9 +35,9 @@ Creating 'dominion.c.gcov'
 
 *** UNIT TEST END discardCard()   ***
 File 'dominion.c'
-Lines executed:19.20% of 578
+Lines executed:19.38% of 578
 Branches executed:19.56% of 409
-Taken at least once:16.38% of 409
+Taken at least once:16.63% of 409
 Calls executed:7.53% of 93
 Creating 'dominion.c.gcov'
 
@@ -53,9 +53,9 @@ Creating 'dominion.c.gcov'
 
 *** UNIT TEST END updateCoins()   ***
 File 'dominion.c'
-Lines executed:19.55% of 578
+Lines executed:19.72% of 578
 Branches executed:19.56% of 409
-Taken at least once:16.87% of 409
+Taken at least once:17.11% of 409
 Calls executed:7.53% of 93
 Creating 'dominion.c.gcov'
 
@@ -70,12 +70,13 @@ Creating 'dominion.c.gcov'
 	Test 7 PASS test attempted use of nonaction card (low boundary)
 	Test 8 PASS test attempted use of nonaction card (high boundary)
 	Test 9 FAIL test attempted play with empty hand | EXPECTED: -1 | ACTUAL: 0
+	Test 10 PASS test bad choice which results in no cardEffect
 
 *** UNIT TEST END playCard()   ***
 File 'dominion.c'
-Lines executed:26.12% of 578
-Branches executed:29.10% of 409
-Taken at least once:21.27% of 409
+Lines executed:27.16% of 578
+Branches executed:30.56% of 409
+Taken at least once:22.74% of 409
 Calls executed:16.13% of 93
 Creating 'dominion.c.gcov'
 
@@ -94,9 +95,9 @@ Creating 'dominion.c.gcov'
 
 *** UNIT TEST END smithy   ***
 File 'dominion.c'
-Lines executed:27.16% of 578
-Branches executed:29.58% of 409
-Taken at least once:22.25% of 409
+Lines executed:28.20% of 578
+Branches executed:31.05% of 409
+Taken at least once:23.72% of 409
 Calls executed:16.13% of 93
 Creating 'dominion.c.gcov'
 
@@ -113,9 +114,9 @@ Creating 'dominion.c.gcov'
 
 *** UNIT TEST END council room   ***
 File 'dominion.c'
-Lines executed:28.72% of 578
-Branches executed:30.56% of 409
-Taken at least once:23.47% of 409
+Lines executed:29.76% of 578
+Branches executed:32.03% of 409
+Taken at least once:24.94% of 409
 Calls executed:20.43% of 93
 Creating 'dominion.c.gcov'
 
@@ -138,9 +139,9 @@ Creating 'dominion.c.gcov'
 
 *** UNIT TEST END adventurer   ***
 File 'dominion.c'
-Lines executed:34.60% of 578
-Branches executed:33.50% of 409
-Taken at least once:27.38% of 409
+Lines executed:35.64% of 578
+Branches executed:34.96% of 409
+Taken at least once:28.85% of 409
 Calls executed:24.73% of 93
 Creating 'dominion.c.gcov'
 
@@ -158,13 +159,13 @@ Creating 'dominion.c.gcov'
 
 *** UNIT TEST END village   ***
 File 'dominion.c'
-Lines executed:35.29% of 578
-Branches executed:33.50% of 409
-Taken at least once:27.63% of 409
+Lines executed:36.33% of 578
+Branches executed:34.96% of 409
+Taken at least once:29.10% of 409
 Calls executed:26.88% of 93
 Creating 'dominion.c.gcov'
 
 number of tests: 
-77
+78
 number of tests failed: 
-14
+15

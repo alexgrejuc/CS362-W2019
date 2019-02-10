@@ -45,6 +45,7 @@ int main() {
     memcpy(&nextState, &initialState, sizeof(struct gameState)); 
 
     handpos = 1;
+    nextState.handCount[player] = 1; 
     discardCard(handpos, player, &nextState, 0); 
     assert_print(initialState.discardCount[player], nextState.discardCount[player], "Discard count unchanged (only 1 card in hand)", &test_num);
     assert_print(initialState.handCount[player] - 1, nextState.handCount[player], "Hand count decreases by 1 (only card in hand)", &test_num);

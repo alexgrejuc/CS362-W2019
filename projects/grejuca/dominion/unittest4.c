@@ -21,7 +21,7 @@ int main() {
     int seed = 100;
     int numPlayers = 2;
     
-    int k[10] = {treasure_map, sea_hag, feast, gardens, mine
+    int k[10] = {treasure_map, sea_hag, feast, gardens, ambassador
                , remodel, smithy, village, cutpurse, great_hall};
 
     struct gameState initialState; // a blank slate to check against and to reset nextState
@@ -70,6 +70,11 @@ int main() {
     nextState.hand[player][handpos] = smithy; 
     nextState.handCount[player] = 0; 
     assert_print(-1, playCard(handpos, c1, c2, c3, &nextState), "test attempted play with empty hand", &test_num); 
+
+    memcpy(&nextState, &initialState, sizeof(struct gameState)); 
+    nextState.hand[player][handpos] = ambassador;
+    assert_print(-1, playCard(handpos, handpos, c2, c3, &nextState), "test bad choice which results in no cardEffect", &test_num);
+
 
     printf ("\n*** UNIT TEST END %s   ***\n", TESTNAME);
     return 0;
