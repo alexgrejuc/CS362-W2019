@@ -16,7 +16,7 @@ int main() {
     printf ("*** UNIT TEST BEGIN %s ***\n\n", TESTNAME);
     int test_num = TEST_ID_START; 
     
-    int handpos = 0, player = 0; 
+    int player = 0; 
 
     int seed = 100;
     int numPlayers = 2;
