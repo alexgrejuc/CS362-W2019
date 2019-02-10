@@ -1,5 +1,5 @@
 /****************************************************************************
-* Unit test for adventurer
+* Unit test for steward
 ****************************************************************************/
 
 #include "dominion.h"
@@ -9,10 +9,10 @@
 #include <string.h>
 #include "rngs.h"
 
-#define TESTNAME "smithy"
+#define TESTNAME "steward"
 #define TEST_ID_START 1
 
-
+// bug: does not trash 
 int main() {    
     printf ("*** UNIT TEST BEGIN %s ***\n\n", TESTNAME);
 
