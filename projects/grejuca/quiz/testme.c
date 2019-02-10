@@ -9,10 +9,11 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define VALID_INPUT_CHAR "[({ ax})]abcdefghijklmnopqrstuv" 
-#define VALID_STRING_CHARS "abcdefghijklmnopqrstuvwxyz"
+#define VALID_INPUT_CHAR "[({ ax})]abcdefghijklmnopqrstuvABCDEFGHIJKLMNOPQRSTUVWXYZ" 
+#define VALID_STRING_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #define KEY_STR	"reset"  
-char inputStringVal[6] = "temps"; 
+#define MAX_INPUT_STRING 15 
+char inputStringVal[MAX_INPUT_STRING] = "tempstring"; 
 
 // randomly picks one of the VALID_INPUT_CHARS
 char inputChar()
@@ -33,6 +34,8 @@ char *inputString()
 	int index_bound = sizeof(valid) / sizeof(char) - 1; 
 	int input_len = sizeof(inputStringVal) / sizeof(char) - 1; 
 	 
+	input_len = random() % input_len; 
+
 	int choice = random() % 10000; 
 
 	if(choice == 0) return KEY_STR; 
@@ -44,6 +47,7 @@ char *inputString()
 		} 
 	} 
 
+	inputStringVal[input_len - 1] = '\0'; 
     return inputStringVal;
 }
 
