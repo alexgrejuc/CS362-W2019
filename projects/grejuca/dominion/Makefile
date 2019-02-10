@@ -28,6 +28,12 @@ cardtest1: cardtest1.c $(TEST_DEPS)
 cardtest2: cardtest2.c $(TEST_DEPS)
 		gcc -o cardtest2 -g  cardtest2.c dominion.o rngs.o test_helpers.o $(CFLAGS)
 
+cardtest3: cardtest3.c $(TEST_DEPS)
+		gcc -o cardtest3 -g  cardtest3.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+
+cardtest4: cardtest4.c $(TEST_DEPS)
+		gcc -o cardtest4 -g  cardtest4.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+
 unittestresults: unittest* cardtest*
 	echo "Dominion unit tests: " > tests.out 
 	make unittest1 
@@ -52,6 +58,14 @@ unittestresults: unittest* cardtest*
 
 	make cardtest2 
 	./cardtest2 >> tests.out
+	gcov -b dominion.c >> tests.out
+
+	make cardtest3 
+	./cardtest3 >> tests.out
+	gcov -b dominion.c >> tests.out
+
+	make cardtest4 
+	./cardtest4 >> tests.out
 	gcov -b dominion.c >> tests.out
 
 	echo "number of tests failed: " >> tests.out

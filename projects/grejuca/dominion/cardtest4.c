@@ -9,7 +9,7 @@
 #include <string.h>
 #include "rngs.h"
 
-#define TESTNAME "adventurer"
+#define TESTNAME "village"
 #define TEST_ID_START 1
 
 
@@ -31,30 +31,20 @@ int main() {
     initializeGame(numPlayers, k, seed, &initialState); 
     memcpy(&nextState, &initialState, sizeof(struct gameState)); 
 
-    nextState.deck[player][0] = copper; 
-    nextState.deck[player][1] = copper; 
-
-    cardEffect(adventurer, c1, c2, c3, &nextState, handpos, &bonus);
-    assert_print(initialState.deckCount[player] - 2, nextState.deckCount[player], "Test two treasures removed from deck", &test_num); 
-    assert_print(initialState.handCount[player] + 2, nextState.handCount[player], "Test two treasures added to hand", &test_num);     
+    cardEffect(village, c1, c2, c3, &nextState, handpos, &bonus);
+    assert_print(initialState.handCount[player], nextState.handCount[player], "Test no net difference in hand size", &test_num);
+    assert_print(initialState.numActions + 2, nextState.numActions, "Test + 2 actions", &test_num);
+    assert_print(initialState.discardCount[player] + 1, nextState.discardCount[player], "Test + 1 discard", &test_num);
 
     memcpy(&nextState, &initialState, sizeof(struct gameState)); 
     for(int i = 0; i < nextState.deckCount[player]; i++){
-        nextState.deck[player][i] = k[i % 10];  
+        nextState.discard[player][i] = nextState.deck[player][i]; 
     }
+    nextState.deckCount[player] = 0; 
+    cardEffect(village, c1, c2, c3, &nextState, handpos, &bonus);
+    assert_print(initialState.handCount[player], nextState.handCount[player], "Test village with empty deck (must be reshuffled first)", &test_num);
+    assert_print(initialState.numActions + 2, nextState.numActions, "Test + 2 actions with empty deck", &test_num); 
 
-    cardEffect(adventurer, c1, c2, c3, &nextState, handpos, &bonus);
-    assert_print(initialState.deckCount[player] - initialState.deckCount[player], nextState.deckCount[player], "Test all cards removed from deck (no treasures)", &test_num); 
-    assert_print(initialState.handCount[player], nextState.handCount[player], "Test no treasures added to hand (no treasures in deck)", &test_num);
-    assert_print(0, nextState.deckCount[player], "Test empty deck if no treasures in deck", &test_num);
-    assert_print(initialState.deckCount[player], nextState.discardCount[player], "Test add to discarded if not treasure", &test_num);
-
-    nextState.discard[player][0] = copper; 
-    nextState.discard[player][1] = copper;  // add 2 copper otherwise the deck would be re-emptied after the next function    
-    cardEffect(adventurer, c1, c2, c3, &nextState, handpos, &bonus);
-    int refilled = nextState.deckCount[player]; 
-    assert_print(initialState.deckCount[player], nextState.deckCount[player], "Test refill of deck if empty", &test_num);
-   
     // check that the common piles of cards were not altered 
     int altered = 0; 
     for(int i = 0; i <= treasure_map; i++){
@@ -69,15 +59,6 @@ int main() {
     assert_print(0, memcmp(initialState.hand[player + 1], nextState.hand[player + 1], sizeof(initialState.hand[player + 1])), "player 2 hand unchanged", &test_num); 
     assert_print(0, memcmp(initialState.deck[player + 1], nextState.deck[player + 1], sizeof(initialState.hand[player + 1])), "player 2 deck unchanged", &test_num);
     assert_print(0, memcmp(initialState.discard[player + 1], nextState.discard[player + 1], sizeof(initialState.hand[player + 1])), "player 2 discard unchanged", &test_num);
-
-
-    memcpy(&nextState, &initialState, sizeof(struct gameState)); 
-    for(int i = 0; i < nextState.deckCount[player]; i++){
-        nextState.deck[player][i] = silver;  
-    }
-    assert_print(initialState.deckCount[player] - 2, nextState.deckCount[player], "Test only two cards removed from deck if two treasures at top", &test_num); 
-    assert_print(initialState.handCount[player] + 2, nextState.handCount[player], "Test two treasures added to hand if in deck", &test_num);
-    assert_print(0, nextState.discardCount[player], "Test no discard if two treasures at top", &test_num); 
     
     printf ("\n*** UNIT TEST END %s   ***\n", TESTNAME);
     return 0;

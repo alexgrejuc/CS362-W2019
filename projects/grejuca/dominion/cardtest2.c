@@ -34,7 +34,7 @@ int main() {
 
     cardEffect(council_room, c1, c2, c3, &nextState, handpos, &bonus);
 
-    assert_print(initialState.handCount[player] + newcards - discards, nextState.handCount[player], "Net 4 cards added to hand", &test_num);
+    assert_print(initialState.handCount[player] + newcards - discards, nextState.handCount[player], "Net 3 cards added to hand", &test_num);
     assert_print(initialState.deckCount[player] - newcards, nextState.deckCount[player], "Net 4 cards removed from deck", &test_num);
     assert_print(initialState.discardCount[player] + discards, nextState.discardCount[player], "Discard increased by 1", &test_num);
     assert_print(initialState.numBuys + 1, nextState.numBuys, "Add 1 buy to the player", &test_num);
