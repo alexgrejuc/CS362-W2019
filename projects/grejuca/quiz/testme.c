@@ -34,16 +34,16 @@ char *inputString()
 	int index_bound = sizeof(valid) / sizeof(char) - 1; 
 	int input_len = sizeof(inputStringVal) / sizeof(char) - 1; 
 	 
-	input_len = random() % input_len; 
+	input_len = rand() % input_len; 
 
-	int choice = random() % 10000; 
+	int choice = rand() % 10000; 
 
 	if(choice == 0) return KEY_STR; 
 
 	// build random input string
  	else {
 		for(int i = 0; i < input_len - 1; i++){
-			inputStringVal[i] = valid[random() % index_bound];
+			inputStringVal[i] = valid[rand() % index_bound];
 		} 
 	} 
 
