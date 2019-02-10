@@ -1,0 +1,170 @@
+Dominion unit tests: 
+*** UNIT TEST BEGIN isGameOver() ***
+
+	Test 1 PASS Game not over on init.
+	Test 2 PASS Game over at 0 province.
+	Test 3 PASS Game not over at all piles of size 1
+	Test 4 PASS Game not over at 1 empty pile
+	Test 5 PASS Game not over at 2 empty piles
+	Test 6 PASS Game over at 3 empty piles
+	Test 7 PASS Game over at all empty piles
+	Test 8 PASS Checking game over does not alter state
+
+*** UNIT TEST END isGameOver()   ***
+File 'dominion.c'
+Lines executed:17.13% of 578
+Branches executed:18.09% of 409
+Taken at least once:15.16% of 409
+Calls executed:7.53% of 93
+Creating 'dominion.c.gcov'
+
+*** UNIT TEST BEGIN discardCard() ***
+
+	Test 1 PASS Discard count increases by 1
+	Test 2 PASS Hand count decreases by 1
+	Test 3 PASS Discard count unchanged (last card in hand)
+	Test 4 PASS Hand count decreases by 1 (last card in hand)
+	Test 5 PASS Discard count unchanged (only 1 card in hand)
+	Test 6 PASS Hand count decreases by 1 (only card in hand)
+	Test 7 FAIL Discard count increases by 1 (not trashed) | EXPECTED: 1 | ACTUAL: 0
+	Test 8 PASS Hand count decreases by 1 (not trashed)
+	Test 9 FAIL other player hand unchanged | EXPECTED: 0 | ACTUAL: -255
+	Test 10 PASS other player deck unchanged
+	Test 11 PASS other player discard unchanged
+	Test 12 PASS Victory, kingdom, and coin piles unaltered
+
+*** UNIT TEST END discardCard()   ***
+File 'dominion.c'
+Lines executed:19.20% of 578
+Branches executed:19.56% of 409
+Taken at least once:16.38% of 409
+Calls executed:7.53% of 93
+Creating 'dominion.c.gcov'
+
+*** UNIT TEST BEGIN updateCoins() ***
+
+	Test 1 PASS Update coins only alters coins field (game state otherwise unchanged)
+	Test 2 PASS Full hand of coppers
+	Test 3 PASS Full hand of silvers
+	Test 4 PASS Full hand of golds and bonus
+	Test 5 PASS no coins
+	Test 6 PASS Mix of all coin types
+	Test 7 PASS Empty hand
+
+*** UNIT TEST END updateCoins()   ***
+File 'dominion.c'
+Lines executed:19.55% of 578
+Branches executed:19.56% of 409
+Taken at least once:16.87% of 409
+Calls executed:7.53% of 93
+Creating 'dominion.c.gcov'
+
+*** UNIT TEST BEGIN playCard() ***
+
+	Test 1 PASS test success of a valid play
+	Test 2 PASS test use up of five actions on five successfuly plays
+	Test 3 PASS test play card on boundary (only one action remaining)
+	Test 4 PASS No action if numActions < 1
+	Test 5 PASS No action if incorrect phase (!= 0)
+	Test 6 PASS numActions unchanged if incorrect phase and play attempt is made
+	Test 7 PASS test attempted use of nonaction card (low boundary)
+	Test 8 PASS test attempted use of nonaction card (high boundary)
+	Test 9 FAIL test attempted play with empty hand | EXPECTED: -1 | ACTUAL: 0
+
+*** UNIT TEST END playCard()   ***
+File 'dominion.c'
+Lines executed:26.12% of 578
+Branches executed:29.10% of 409
+Taken at least once:21.27% of 409
+Calls executed:16.13% of 93
+Creating 'dominion.c.gcov'
+
+*** UNIT TEST BEGIN smithy ***
+
+	Test 1 FAIL Net two cards added to hand | EXPECTED: 7 | ACTUAL: 8
+	Test 2 FAIL Net three cards removed from deck | EXPECTED: 2 | ACTUAL: 1
+	Test 3 FAIL Discard increased by 1 | EXPECTED: 1 | ACTUAL: 0
+	Test 4 PASS Victory, kingdom, and coin piles unaltered
+	Test 5 PASS player 2 hand unchanged
+	Test 6 PASS player 2 deck unchanged
+	Test 7 PASS player 2 discard unchanged
+	Test 8 PASS player 3 hand unchanged
+	Test 9 PASS player 3 deck unchanged
+	Test 10 PASS player 3 discard unchanged
+
+*** UNIT TEST END smithy   ***
+File 'dominion.c'
+Lines executed:27.16% of 578
+Branches executed:29.58% of 409
+Taken at least once:22.25% of 409
+Calls executed:16.13% of 93
+Creating 'dominion.c.gcov'
+
+*** UNIT TEST BEGIN council room ***
+
+	Test 1 FAIL Net 3 cards added to hand | EXPECTED: 8 | ACTUAL: 9
+	Test 2 FAIL Net 4 cards removed from deck | EXPECTED: 1 | ACTUAL: 0
+	Test 3 FAIL Discard increased by 1 | EXPECTED: 1 | ACTUAL: 0
+	Test 4 PASS Add 1 buy to the player
+	Test 5 PASS Victory, kingdom, and coin piles unaltered
+	Test 6 PASS one card added to player 2 hand
+	Test 7 PASS one card removed from player 2 deck
+	Test 8 PASS player 2 discard unchanged
+
+*** UNIT TEST END council room   ***
+File 'dominion.c'
+Lines executed:28.72% of 578
+Branches executed:30.56% of 409
+Taken at least once:23.47% of 409
+Calls executed:20.43% of 93
+Creating 'dominion.c.gcov'
+
+*** UNIT TEST BEGIN adventurer ***
+
+	Test 1 PASS Test two treasures removed from deck
+	Test 2 PASS Test two treasures added to hand
+	Test 3 PASS Test all cards removed from deck (no treasures)
+	Test 4 PASS Test no treasures added to hand (no treasures in deck)
+	Test 5 PASS Test empty deck if no treasures in deck
+	Test 6 PASS Test add to discarded if not treasure
+	Test 7 FAIL Test refill of deck if empty | EXPECTED: 5 | ACTUAL: 0
+	Test 8 PASS Victory, kingdom, and coin piles unaltered
+	Test 9 PASS player 2 hand unchanged
+	Test 10 PASS player 2 deck unchanged
+	Test 11 PASS player 2 discard unchanged
+	Test 12 FAIL Test only two cards removed from deck if two treasures at top | EXPECTED: 3 | ACTUAL: 5
+	Test 13 FAIL Test two treasures added to hand if in deck | EXPECTED: 7 | ACTUAL: 5
+	Test 14 PASS Test no discard if two treasures at top
+
+*** UNIT TEST END adventurer   ***
+File 'dominion.c'
+Lines executed:34.60% of 578
+Branches executed:33.50% of 409
+Taken at least once:27.38% of 409
+Calls executed:24.73% of 93
+Creating 'dominion.c.gcov'
+
+*** UNIT TEST BEGIN village ***
+
+	Test 1 PASS Test no net difference in hand size
+	Test 2 PASS Test + 2 actions
+	Test 3 FAIL Test + 1 discard | EXPECTED: 1 | ACTUAL: 0
+	Test 4 FAIL Test village with empty deck (must be reshuffled first) | EXPECTED: 5 | ACTUAL: 4
+	Test 5 PASS Test + 2 actions with empty deck
+	Test 6 PASS Victory, kingdom, and coin piles unaltered
+	Test 7 PASS player 2 hand unchanged
+	Test 8 PASS player 2 deck unchanged
+	Test 9 PASS player 2 discard unchanged
+
+*** UNIT TEST END village   ***
+File 'dominion.c'
+Lines executed:35.29% of 578
+Branches executed:33.50% of 409
+Taken at least once:27.63% of 409
+Calls executed:26.88% of 93
+Creating 'dominion.c.gcov'
+
+number of tests: 
+77
+number of tests failed: 
+14
