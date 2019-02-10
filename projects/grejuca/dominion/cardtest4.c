@@ -1,5 +1,5 @@
 /****************************************************************************
-* Unit test for adventurer
+* Unit test for village
 ****************************************************************************/
 
 #include "dominion.h"
@@ -16,7 +16,7 @@
 int main() {    
     printf ("*** UNIT TEST BEGIN %s ***\n\n", TESTNAME);
     int c1 = 0, c2 = 0, c3 = 0, handpos = 0, bonus = 0; 
-    int player = 0, newcards = 4, discards = 1; 
+    int player = 0; 
     int test_num = TEST_ID_START; 
     
     int seed = 1000;

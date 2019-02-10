@@ -16,7 +16,7 @@
 int main() {    
     printf ("*** UNIT TEST BEGIN %s ***\n\n", TESTNAME);
     int c1 = 0, c2 = 0, c3 = 0, handpos = 0, bonus = 0; 
-    int player = 0, newcards = 4, discards = 1; 
+    int player = 0; 
     int test_num = TEST_ID_START; 
     
     int seed = 1000;
@@ -52,7 +52,6 @@ int main() {
     nextState.discard[player][0] = copper; 
     nextState.discard[player][1] = copper;  // add 2 copper otherwise the deck would be re-emptied after the next function    
     cardEffect(adventurer, c1, c2, c3, &nextState, handpos, &bonus);
-    int refilled = nextState.deckCount[player]; 
     assert_print(initialState.deckCount[player], nextState.deckCount[player], "Test refill of deck if empty", &test_num);
    
     // check that the common piles of cards were not altered 

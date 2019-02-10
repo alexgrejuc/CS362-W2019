@@ -68,6 +68,9 @@ unittestresults: unittest* cardtest*
 	./cardtest4 >> tests.out
 	gcov -b dominion.c >> tests.out
 
+	echo "number of tests: " >> tests.out
+	grep -o "Test [0-9]" tests.out | wc -l >> tests.out
+
 	echo "number of tests failed: " >> tests.out
 	grep -o "FAIL" tests.out | wc -l >> tests.out
 
