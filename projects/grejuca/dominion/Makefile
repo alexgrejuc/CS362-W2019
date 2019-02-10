@@ -1,10 +1,33 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
-
+EXE= playdom.exe playdom player player.exe unittest*[!.c] cardtest*[!.c]
+TEST_DEPS = dominion.o rngs.o test_helpers.o
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
 
 dominion.o: dominion.h dominion.c rngs.o
 	gcc -c dominion.c -g  $(CFLAGS)
+
+test_helpers.o: test_helpers.h test_helpers.c 
+	gcc -c test_helpers.c -g $(CFLAGS)
+
+unittest1: unittest1.c $(TEST_DEPS) 
+	gcc -o unittest1 -g  unittest1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+
+cardtest1: cardtest1.c $(TEST_DEPS)
+		gcc -o cardtest1 -g  cardtest1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+
+unittestresults: unittest* cardtest*
+	echo "Dominion unit tests: " > tests.out 
+	make unittest1 
+	./unittest1 >> tests.out
+	gcov -b dominion.c >> tests.out
+
+	make cardtest1 
+	./cardtest1 >> tests.out
+	gcov -b dominion.c >> tests.out
+
+	echo "number of tests failed: " >> tests.out
+	grep -o "FAIL" tests.out | wc -l >> tests.out
 
 playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
@@ -29,11 +52,10 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
-
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o $(EXE) *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
