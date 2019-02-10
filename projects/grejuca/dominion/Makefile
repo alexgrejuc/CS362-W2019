@@ -19,6 +19,9 @@ unittest2: unittest2.c $(TEST_DEPS)
 unittest3: unittest3.c $(TEST_DEPS) 
 	gcc -o unittest3 -g  unittest3.c dominion.o rngs.o test_helpers.o $(CFLAGS)
 
+unittest4: unittest4.c $(TEST_DEPS) 
+	gcc -o unittest4 -g  unittest4.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+
 cardtest1: cardtest1.c $(TEST_DEPS)
 		gcc -o cardtest1 -g  cardtest1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
 
@@ -37,6 +40,10 @@ unittestresults: unittest* cardtest*
 
 	make unittest3 
 	./unittest3 >> tests.out
+	gcov -b dominion.c >> tests.out
+
+	make unittest4 
+	./unittest4 >> tests.out
 	gcov -b dominion.c >> tests.out
 
 	make cardtest1 

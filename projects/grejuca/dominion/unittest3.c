@@ -32,7 +32,7 @@ int main() {
 
     updateCoins(player, &nextState, 0);
     nextState.coins = initialState.coins; 
-    assert_print(memcmp(&nextState, &initialState, sizeof(struct gameState)), 0, "Update coins only alters coins field", &test_num); 
+    assert_print(memcmp(&nextState, &initialState, sizeof(struct gameState)), 0, "Update coins only alters coins field (game state otherwise unchanged)", &test_num); 
 
     for(int i = 0; i < nextState.handCount[player]; i++){
         nextState.hand[player][i] = copper; 
