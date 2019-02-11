@@ -10,10 +10,8 @@
 #include<time.h>
 
 #define VALID_INPUT_CHAR "[({ ax})]abcdefghijklmnopqrstuvABCDEFGHIJKLMNOPQRSTUVWXYZ" 
-#define VALID_STRING_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-#define KEY_STR	"reset"  
-#define MAX_INPUT_STRING 15 
-char inputStringVal[MAX_INPUT_STRING] = "tempstring"; 
+#define VALID_STRING_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZresetresetresetreset"
+char inputStringVal[] = "temp1"; 
 
 // randomly picks one of the VALID_INPUT_CHARS
 char inputChar()
@@ -29,25 +27,15 @@ char inputChar()
 char *inputString()
 {
 	char valid[] = VALID_STRING_CHARS; // stores built up input string
-	char valid_key[] = KEY_STR; // returns reset directly  
 
 	int index_bound = sizeof(valid) / sizeof(char) - 1; 
-	int input_len = sizeof(inputStringVal) / sizeof(char) - 1; 
-	 
-	input_len = rand() % input_len; 
-
-	int choice = rand() % 10000; 
-
-	if(choice == 0) return KEY_STR; 
-
+	int input_len = sizeof(inputStringVal) / sizeof(char); 
+	  
 	// build random input string
- 	else {
-		for(int i = 0; i < input_len - 1; i++){
-			inputStringVal[i] = valid[rand() % index_bound];
-		} 
+	for(int i = 0; i < input_len - 1; i++){
+		inputStringVal[i] = valid[rand() % index_bound];
 	} 
 
-	inputStringVal[input_len - 1] = '\0'; 
     return inputStringVal;
 }
 
