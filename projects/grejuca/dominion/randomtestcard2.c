@@ -12,34 +12,29 @@
 #include "rngs.h"
 #include <time.h> 
 
-#define TESTNAME "adventurer"
+#define TESTNAME "village"
 #define TEST_ID_START 1 
 
-int testAdventurer(int player, struct gameState* G){
+int testVillage(int player, struct gameState* G){
     struct gameState preG;
     memcpy(&preG, G, sizeof(struct gameState)); 
 
-    int treasureCount = countDeckTreasure(player, G); 
+    int treasureCount = countDeckTreasure(player, G);
 
-    // these values should not effect adventurer play at all 
+    // these values should not effect village play at all 
     int c1 = rand() % MAX_HAND; 
     int c2 = rand() % MAX_HAND; 
     int c3 = rand() % MAX_HAND; 
     int hp = rand() % MAX_DECK; 
     int bonus = rand() % 1000; 
 
-    cardEffect(adventurer, c1, c2, c3, G, hp, &bonus);
-    //adventurerEffect(player, G);
+    cardEffect(village, c1, c2, c3, G, hp, &bonus);
 
-    // if < 2 treasures in deck player can't gain 2 
-    if(treasureCount == 0 || treasureCount == 1){
-        assert_print_err(countHandTreasure(player, &preG) + treasureCount, countHandTreasure(player, G), "treasure increase");
-    }
-    else{ // player should gain no more than 2 treasure 
-        assert_print_err(countHandTreasure(player, &preG) + 2, countHandTreasure(player, G), "treasure increase");  
-    }
+    assert_print(initialState.handCount[player], nextState.handCount[player], "Test no net difference in hand size", &test_num);
+    assert_print(initialState.numActions + 2, nextState.numActions, "Test + 2 actions", &test_num);
+    assert_print(initialState.discardCount[player] + 1, nextState.discardCount[player], "Test + 1 discard", &test_num);
 
-    // deck, hand, discard (and counts) can all be expected to change 
+    // deck, hand, discard, and playedCards (and counts) can all be expected to change 
     // set them to be equal to avoid false trigger of side effect error 
     // copy preG into G because G may have some out of bounds counts due to buggy code 
     memcpy(G->deck[player], preG.deck[player], sizeof(int) * MAX_DECK);
@@ -50,6 +45,9 @@ int testAdventurer(int player, struct gameState* G){
 
     memcpy(G->discard[player], preG.discard[player], sizeof(int) * MAX_DECK);
     G->discardCount[player] = preG.discardCount[player];
+
+    memcpy(G->playedCards, preG.playedCards, sizeof(int) * MAX_DECK);
+    G->playedCardCount = preG.playedCardCount;
 
     if(memcmp(&preG, G, sizeof(struct gameState)) != 0) {
       printf("\tFAIL side effect found\n"); 
