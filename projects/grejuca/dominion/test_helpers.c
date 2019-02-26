@@ -10,7 +10,7 @@ void assert_print(int expected, int actual, char* message, int* num){
 
 void assert_print_err(int expected, int actual, char* message){
 	if(expected != actual)
-	    printf("\t FAIL %s | EXPECTED: %i | ACTUAL: %i\n", message, expected, actual);
+	    printf("\tFAIL %s | EXPECTED: %i | ACTUAL: %i\n", message, expected, actual);
 }
 
 // counts the number of treasure cards in a deck 

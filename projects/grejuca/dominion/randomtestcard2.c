@@ -19,20 +19,18 @@ int testVillage(int player, struct gameState* G){
     struct gameState preG;
     memcpy(&preG, G, sizeof(struct gameState)); 
 
-    int treasureCount = countDeckTreasure(player, G);
-
-    // these values should not effect village play at all 
+    // only hp should affect village play via discardCard() function 
     int c1 = rand() % MAX_HAND; 
     int c2 = rand() % MAX_HAND; 
     int c3 = rand() % MAX_HAND; 
     int hp = rand() % MAX_DECK; 
-    int bonus = rand() % 1000; 
+    int bonus = rand() % 1000; // a generous upper limit for bonus to test boundary
 
     cardEffect(village, c1, c2, c3, G, hp, &bonus);
 
-    assert_print(initialState.handCount[player], nextState.handCount[player], "Test no net difference in hand size", &test_num);
-    assert_print(initialState.numActions + 2, nextState.numActions, "Test + 2 actions", &test_num);
-    assert_print(initialState.discardCount[player] + 1, nextState.discardCount[player], "Test + 1 discard", &test_num);
+    assert_print_err(preG.handCount[player], G->handCount[player], "Test no net difference in hand size");
+    assert_print_err(preG.numActions + 2, G->numActions, "Test + 2 actions");
+    assert_print_err(preG.discardCount[player] + 1, G->discardCount[player], "Test + 1 discard");
 
     // deck, hand, discard, and playedCards (and counts) can all be expected to change 
     // set them to be equal to avoid false trigger of side effect error 
@@ -48,6 +46,8 @@ int testVillage(int player, struct gameState* G){
 
     memcpy(G->playedCards, preG.playedCards, sizeof(int) * MAX_DECK);
     G->playedCardCount = preG.playedCardCount;
+
+    G->numActions = preG.numActions; 
 
     if(memcmp(&preG, G, sizeof(struct gameState)) != 0) {
       printf("\tFAIL side effect found\n"); 
@@ -78,7 +78,8 @@ int main() {
     rand_discard(player, &G);  
 
     G.whoseTurn = player; 
-    testAdventurer(player, &G);
+    testVillage(player, &G);
   }
+    printf ("\n*** UNIT TEST END %s   ***\n", TESTNAME);
     return 0;
 }

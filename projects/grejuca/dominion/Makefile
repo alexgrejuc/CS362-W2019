@@ -12,8 +12,24 @@ test_helpers.o: test_helpers.h test_helpers.c
 
 randomtestcard1: randomtestcard1.c $(TEST_DEPS) 
 	gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
-	
-randomtest1results: randomtestcard1.c 
+
+randomtestcard2: randomtestcard2.c $(TEST_DEPS) 
+	gcc -o randomtestcard2 -g randomtestcard2.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+
+randomtestcard3: randomtestcard2.c $(TEST_DEPS) 
+	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+
+randomtest3results: randomtestcard3.c
+	make randomtestcard3
+	./randomtestcard3 >> randomtestcard3.out
+	gcov -b dominion.c >> randomtestcard3.out
+
+randomtest2results: randomtestcard2.c
+	make randomtestcard2
+	./randomtestcard2 >> randomtestcard2.out
+	gcov -b dominion.c >> randomtestcard2.out
+
+randomtest1results: randomtestcard1.c
 	make randomtestcard1
 	./randomtestcard1 >> randomtestcard1.out
 	gcov -b dominion.c >> randomtestcard1.out

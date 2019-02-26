@@ -21,15 +21,14 @@ int testAdventurer(int player, struct gameState* G){
 
     int treasureCount = countDeckTreasure(player, G); 
 
-    // these values should not effect adventurer play at all 
+    // these values should not affect adventurer play at all 
     int c1 = rand() % MAX_HAND; 
     int c2 = rand() % MAX_HAND; 
     int c3 = rand() % MAX_HAND; 
     int hp = rand() % MAX_DECK; 
-    int bonus = rand() % 1000; 
+    int bonus = rand() % 1000; // a generous upper limit for bonus to test boundary
 
     cardEffect(adventurer, c1, c2, c3, G, hp, &bonus);
-    //adventurerEffect(player, G);
 
     // if < 2 treasures in deck player can't gain 2 
     if(treasureCount == 0 || treasureCount == 1){
@@ -82,5 +81,6 @@ int main() {
     G.whoseTurn = player; 
     testAdventurer(player, &G);
   }
+    printf ("\n*** UNIT TEST END %s   ***\n", TESTNAME);
     return 0;
 }
