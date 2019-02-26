@@ -7,3 +7,9 @@ void assert_print(int expected, int actual, char* message, int* num){
 	if(expected == actual) printf("PASS %s\n", message); 
 	else printf("FAIL %s | EXPECTED: %i | ACTUAL: %i\n", message, expected, actual); 
 }
+
+void assert_print_err(int expected, int actual, char* message){
+	if(expected != actual)
+	    printf("\t FAIL %s | EXPECTED: %i | ACTUAL: %i\n", message, expected, actual);
+}
+

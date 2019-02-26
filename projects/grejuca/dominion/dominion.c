@@ -739,7 +739,9 @@ int getCost(int cardNumber)
   return -1;
 }
 
-int adventurerEffect(int currentPlayer, int tempHand[], int cardDrawn, struct gameState *state){
+int adventurerEffect(int currentPlayer, struct gameState *state){
+  int tempHand[MAX_HAND];
+  int cardDrawn = -1; 
   int tempHandCounter = 0; 
   int drawnTreasure = 0; 
   while (drawnTreasure < 2)
@@ -750,8 +752,8 @@ int adventurerEffect(int currentPlayer, int tempHand[], int cardDrawn, struct ga
     }
     drawCard(currentPlayer, state);
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer] - 1]; //top card of hand is most recently drawn card.
-    if (cardDrawn == copper) // **BUG** should also check for silver and gold 
-      drawnTreasure++;
+    if (cardDrawn == copper){ // **BUG** should also check for silver and gold
+      drawnTreasure++;}
     else
     {
       tempHand[tempHandCounter] = cardDrawn;
@@ -790,7 +792,8 @@ int councilRoomEffect(int currentPlayer, int handPos, struct gameState *state){
     return 0; 
 }
 
-int feastEffect(int choice1, int currentPlayer, int tempHand[], struct gameState *state){
+int feastEffect(int choice1, int currentPlayer, struct gameState *state){
+    int tempHand[MAX_HAND];
     //gain card with cost up to 5
     //Backup hand
     for (int i = 0; i <= state->handCount[currentPlayer]; i++)
@@ -912,8 +915,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   int nextPlayer = currentPlayer + 1;
 
   int tributeRevealedCards[2] = {-1, -1};
-  int tempHand[MAX_HAND]; // moved above the if statement
-  int cardDrawn = -1; 
   
   if (nextPlayer > (state->numPlayers - 1))
   {
@@ -924,11 +925,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch (card)
   {
   case adventurer:
-    return adventurerEffect(currentPlayer, tempHand, cardDrawn, state);
+    return adventurerEffect(currentPlayer, state);
   case council_room:
     return councilRoomEffect(currentPlayer, handPos, state); 
   case feast:
-    return feastEffect(choice1, currentPlayer, tempHand, state); 
+    return feastEffect(choice1, currentPlayer, state); 
   case gardens:
     return -1;
   case mine:

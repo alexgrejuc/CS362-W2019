@@ -1,5 +1,5 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
-EXE= playdom.exe playdom player player.exe unittest*[!.c] cardtest*[!.c]
+EXE= playdom.exe playdom player player.exe unittest*[!.c] cardtest*[!.c] randomtestcard*[!.c]
 TEST_DEPS = dominion.o rngs.o test_helpers.o
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -9,6 +9,14 @@ dominion.o: dominion.h dominion.c rngs.o
 
 test_helpers.o: test_helpers.h test_helpers.c 
 	gcc -c test_helpers.c -g $(CFLAGS)
+
+randomtestcard1: randomtestcard1.c $(TEST_DEPS) 
+		gcc -o randomtestcard1 -g  randomtestcard1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+	
+randomtest1results: randomtest*
+	make randomtestcard1
+	./randomtestcard1 >> randomtestcard1.out
+	gcov -b dominion.c >> randomtestcard1.out
 
 unittest1: unittest1.c $(TEST_DEPS) 
 	gcc -o unittest1 -g  unittest1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
