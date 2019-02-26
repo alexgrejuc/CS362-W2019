@@ -7,13 +7,13 @@ rngs.o: rngs.h rngs.c
 dominion.o: dominion.h dominion.c rngs.o
 	gcc -c dominion.c -g  $(CFLAGS)
 
-test_helpers.o: test_helpers.h test_helpers.c 
+test_helpers.o: test_helpers.h test_helpers.c  
 	gcc -c test_helpers.c -g $(CFLAGS)
 
 randomtestcard1: randomtestcard1.c $(TEST_DEPS) 
-		gcc -o randomtestcard1 -g  randomtestcard1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+	gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.o test_helpers.o $(CFLAGS)
 	
-randomtest1results: randomtest*
+randomtest1results: randomtestcard1.c 
 	make randomtestcard1
 	./randomtestcard1 >> randomtestcard1.out
 	gcov -b dominion.c >> randomtestcard1.out

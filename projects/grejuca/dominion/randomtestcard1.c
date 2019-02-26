@@ -15,38 +15,6 @@
 #define TESTNAME "adventurerEffect()"
 #define TEST_ID_START 1 
 
-int countDeckTreasure(int player, struct gameState *game) {
-  int card, index, count = 0;
-  for(index = 0; index < game->deckCount[player]; index++) {
-    card = game->deck[player][index];
-    switch(card) {
-    case copper: count++;
-      break;
-    case silver: count++;
-      break;
-    case gold: count++;
-      break;
-    }
-  }
-  return count;
-}
-
-int countHandTreasure(int player, struct gameState *game) {
-  int card, index, count = 0;
-  for(index = 0; index < game->handCount[player]; index++) {
-    card = game->hand[player][index];
-    switch(card) {
-    case copper: count++;
-      break;
-    case silver: count++;
-      break;
-    case gold: count++;
-      break;
-    }
-  }
-  return count;
-}
-
 int testAdventurer(int player, struct gameState* G){
     struct gameState preG;
     memcpy(&preG, G, sizeof(struct gameState)); 
@@ -61,56 +29,22 @@ int testAdventurer(int player, struct gameState* G){
         assert_print_err(countHandTreasure(player, &preG) + 2, countHandTreasure(player, G), "treasure increase");  
     }
 
+    // deck, hand, discard (and counts) can all be expected to change 
+    // set them to be equal to avoid false trigger of side effect error 
+    // copy preG into G because G may have some out of bounds counts due to buggy code 
+    memcpy(G->deck[player], preG.deck[player], sizeof(int) * MAX_DECK);
+    G->deckCount[player] = preG.deckCount[player]; 
 
-    /*if(memcmp(&preG, G, sizeof(struct gameState)) != 0) {
-      printf("FAIL side effect found"); 
-    }*/ 
+    memcpy(G->hand[player], preG.hand[player], sizeof(int) * MAX_HAND);
+    G->handCount[player] = preG.handCount[player];
+
+    memcpy(G->discard[player], preG.discard[player], sizeof(int) * MAX_DECK);
+    G->discardCount[player] = preG.discardCount[player];
+
+    if(memcmp(&preG, G, sizeof(struct gameState)) != 0) {
+      printf("\tFAIL side effect found\n"); 
+    }
     return 0; 
-}
-
-// generate a random set of kc (all cards in set are unique)
-void rand_kc(int k[]){
-    // create a random set of kingdom cards  
-    for(int i = 0; i < 10; i++){
-      int same = 1; 
-      int card; 
-      while(same){
-        card = rand() % (treasure_map + 1);
-        same = 0; 
-        for(int j = 0; j < i; j++){
-          if(card == k[j]) same = 1;
-        }
-      }
-
-      k[i] = card;
-    }
-}
-
-void rand_hand(int player, struct gameState* G){
-    G->handCount[player] = rand() % (MAX_HAND + 1); 
-
-    // create a random hand 
-    for(int i = 0; i < G->handCount[player]; i++){
-      G->hand[player][i] = rand() % (treasure_map + 1);
-    }
-}
-
-void rand_deck(int player, struct gameState* G){
-    G->deckCount[player] = rand() % (MAX_HAND + 1);
-
-    for(int i = 0; i < G->deckCount[player]; i++){
-      G->deck[player][i] = rand() % (treasure_map + 1);
-    }
-}
-
-void rand_discard(int player, struct gameState* G){
-    // discardCount is incremented in dominion in a way that can cause seg faults
-    // setting the count to MAX / 2 reduces the liklihood of an array out of bounds 
-    G->discardCount[player] = rand() % (MAX_HAND / 2);
-
-    for(int i = 0; i < G->deckCount[player]; i++){
-      G->discard[player][i] = rand() % (treasure_map + 1);
-    }
 }
 
 int main() {
