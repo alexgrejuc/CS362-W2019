@@ -16,13 +16,13 @@ randomtestcard1: randomtestcard1.c $(TEST_DEPS)
 randomtestcard2: randomtestcard2.c $(TEST_DEPS) 
 	gcc -o randomtestcard2 -g randomtestcard2.c dominion.o rngs.o test_helpers.o $(CFLAGS)
 
-randomtestcard3: randomtestcard2.c $(TEST_DEPS) 
-	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o test_helpers.o $(CFLAGS)
+randomtestadventurer: randomtestadventurer.c $(TEST_DEPS) 
+	gcc -o randomtestadventurer -g randomtestadventurer.c dominion.o rngs.o test_helpers.o $(CFLAGS)
 
-randomtest3results: randomtestcard3.c
-	make randomtestcard3
-	./randomtestcard3 >> randomtestcard3.out
-	gcov -b dominion.c >> randomtestcard3.out
+randomtestadventurerresults: randomtestadventurer.c
+	make randomtestadventurer
+	./randomtestadventurer >> randomtestadventurer.out
+	gcov -b dominion.c >> randomtestadventurer.out
 
 randomtest2results: randomtestcard2.c
 	make randomtestcard2
@@ -127,4 +127,4 @@ player: player.c interface.o
 all: playdom player 
 
 clean:
-	rm -f *.o $(EXE) *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o $(EXE) *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe randomtestadventurer

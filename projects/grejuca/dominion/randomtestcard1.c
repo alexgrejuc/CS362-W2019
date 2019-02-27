@@ -12,43 +12,55 @@
 #include "rngs.h"
 #include <time.h> 
 
-#define TESTNAME "adventurer"
+#define TESTNAME "council room"
 #define TEST_ID_START 1 
 
-int testAdventurer(int player, struct gameState* G){
+int testCouncil(int player, struct gameState* G){
     struct gameState preG;
     memcpy(&preG, G, sizeof(struct gameState)); 
 
-    int treasureCount = countDeckTreasure(player, G); 
-
-    // these values should not affect adventurer play at all 
+    // these should not affect council room play via discardCard() function 
     int c1 = rand() % MAX_HAND; 
     int c2 = rand() % MAX_HAND; 
     int c3 = rand() % MAX_HAND; 
     int hp = rand() % MAX_DECK; 
-    int bonus = rand() % 1000; // a generous upper limit for bonus to test boundary
+    int bonus = rand() % 1000; // a generous upper limit for bonus to test boundary  
 
-    cardEffect(adventurer, c1, c2, c3, G, hp, &bonus);
 
-    // if < 2 treasures in deck player can't gain 2 
-    if(treasureCount == 0 || treasureCount == 1){
-        assert_print_err(countHandTreasure(player, &preG) + treasureCount, countHandTreasure(player, G), "treasure increase");
+    cardEffect(council_room, c1, c2, c3, G, hp, &bonus);
+
+    // check expected effect on current player 
+    assert_print_err(preG.handCount[player] + 3, G->handCount[player], "Net 3 cards added to hand");
+    assert_print_err(preG.deckCount[player] - 4, G->deckCount[player], "Net 4 cards removed from deck");
+    assert_print_err(preG.discardCount[player] + 1, G->discardCount[player], "Discard increased by 1");
+    assert_print_err(preG.numBuys + 1, G->numBuys, "Add 1 buy to the player");
+
+    // check expected effects on other players 
+    // update expected changes to avoid false side effect error
+    for(int i = 0; i < G->numPlayers; i++){
+        if(i != player){
+            assert_print_err(preG.handCount[i] + 1, G->handCount[i], "one card added to player 2 hand"); 
+            assert_print_err(preG.deckCount[i] - 1, G->deckCount[i], "one card removed from player 2 deck");
+            assert_print_err(preG.discardCount[i], G->discardCount[i], "player 2 discard unchanged");
+        }
+
+        // deck, hand, discard, and playedCards (and counts) can all be expected to change 
+        // set them to be equal to avoid false trigger of side effect error 
+        // copy preG into G because G may have some out of bounds counts due to buggy code 
+        memcpy(G->deck[i], preG.deck[i], sizeof(int) * MAX_DECK);
+        G->deckCount[i] = preG.deckCount[i]; 
+
+        memcpy(G->hand[i], preG.hand[i], sizeof(int) * MAX_HAND);
+        G->handCount[i] = preG.handCount[i];
+
+        memcpy(G->playedCards, preG.playedCards, sizeof(int) * MAX_DECK);
+        G->playedCardCount = preG.playedCardCount;
     }
-    else{ // player should gain no more than 2 treasure 
-        assert_print_err(countHandTreasure(player, &preG) + 2, countHandTreasure(player, G), "treasure increase");  
-    }
 
-    // deck, hand, discard (and counts) can all be expected to change 
-    // set them to be equal to avoid false trigger of side effect error 
-    // copy preG into G because G may have some out of bounds counts due to buggy code 
-    memcpy(G->deck[player], preG.deck[player], sizeof(int) * MAX_DECK);
-    G->deckCount[player] = preG.deckCount[player]; 
-
-    memcpy(G->hand[player], preG.hand[player], sizeof(int) * MAX_HAND);
-    G->handCount[player] = preG.handCount[player];
-
+    // only the current player should have an altered discard
     memcpy(G->discard[player], preG.discard[player], sizeof(int) * MAX_DECK);
     G->discardCount[player] = preG.discardCount[player];
+    preG.numBuys++; 
 
     if(memcmp(&preG, G, sizeof(struct gameState)) != 0) {
       printf("\tFAIL side effect found\n"); 
@@ -73,13 +85,16 @@ int main() {
 
     initializeGame(numPlayers, k, seed, &G);  // init game to properly set everything
 
-    // further randomize the game  
-    rand_hand(player, &G);
-    rand_deck(player, &G);
-    rand_discard(player, &G);  
+    // further randomize the game
+    // do this for all players since council room interacts with other player piles 
+    for(int j = 0; j < numPlayers; j++){  
+        rand_hand(player, &G);
+        rand_deck(player, &G);
+        rand_discard(player, &G);
+    }  
 
     G.whoseTurn = player; 
-    testAdventurer(player, &G);
+    testCouncil(player, &G);
   }
     printf ("\n*** UNIT TEST END %s   ***\n", TESTNAME);
     return 0;
