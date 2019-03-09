@@ -650,7 +650,7 @@ int getCost(int cardNumber)
 /*
  * Jonah Siekmann 1/26/2019
  */
-int smithyEffect(int currentPlayer, struct gameState *state, int handPos){
+int smithyEffect(int currentPlayer, int handPos, struct gameState *state){
 	//+3 Cards
 	for (int i = 0; i < 3; i++){
 		drawCard(currentPlayer, state);
@@ -692,7 +692,7 @@ int adventurerEffect(int currentPlayer, struct gameState *state){
 /*
  * Jonah Siekmann 1/26/2019
  */
-int mineEffect(int currentPlayer, struct gameState *state, int choice2, int choice1, int handPos){
+int mineEffect(int choice1, int choice2, int currentPlayer, int handPos, struct gameState *state){
 	int j = state->hand[currentPlayer][choice1];	//store card we will trash
 
 	if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold){
@@ -724,7 +724,7 @@ int mineEffect(int currentPlayer, struct gameState *state, int choice2, int choi
 /*
  * Jonah Siekmann 1/26/2019
  */
-int feastEffect(int currentPlayer, struct gameState *state, int choice1, int choice2, int handPos){
+int feastEffect(int choice1, int currentPlayer, struct gameState *state){
 	//gain card with cost up to 5
 	int temphand[MAX_HAND];
 	//Backup hand
@@ -782,7 +782,7 @@ int feastEffect(int currentPlayer, struct gameState *state, int choice1, int cho
 /*
  * Jonah Siekmann 1/26/2019
  */
-int councilroomEffect(int currentPlayer, struct gameState *state, int handPos){
+int councilroomEffect(int currentPlayer, int handPos, struct gameState *state){
 	//+4 Cards
 	for (int i = 0; i < 4; i++){
 		drawCard(currentPlayer, state);
@@ -832,16 +832,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			return adventurerEffect(currentPlayer, state);	
 		
 		case council_room:
-			return councilroomEffect(currentPlayer, state, handPos);
+			return councilroomEffect(currentPlayer, handPos, state);
 		
 		case feast:
-			return feastEffect(currentPlayer, state, choice1, choice2, handPos);
+			return feastEffect(choice1, currentPlayer, state);
 
 		case gardens:
 			return -1;
 			
 		case mine:
-			return mineEffect(currentPlayer, state, choice1, choice2, handPos);
+			return mineEffect(choice1, choice2, currentPlayer, handPos, state);
 			
 		case remodel:
 			j = state->hand[currentPlayer][choice1];	//store card we will trash
@@ -868,7 +868,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			return 0;
 		
 		case smithy:
-			return smithyEffect(currentPlayer, state, handPos);
+			return smithyEffect(currentPlayer, handPos, state);
 		
 		case village:
 			//+1 Card
