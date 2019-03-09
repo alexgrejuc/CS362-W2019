@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Code taken from Jonah Siekman's (siekmanj) assignment-4 repo for testing
- ******************************************************************************/
-  
+/******************************************************************************
+ * Code from Jonah Siekman's (siekmanj) assignment 2 repo 
+ * ***************************************************************************/ 
+
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
@@ -650,9 +650,9 @@ int getCost(int cardNumber)
 /*
  * Jonah Siekmann 1/26/2019
  */
-int smithyEffect(int currentPlayer, int handPos, struct gameState *state){
+int smithyEffect(int currentPlayer, struct gameState *state, int handPos){
 	//+3 Cards
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i <= 3; i++){
 		drawCard(currentPlayer, state);
 	}
 	
@@ -664,7 +664,6 @@ int smithyEffect(int currentPlayer, int handPos, struct gameState *state){
  * Jonah Siekmann 1/26/2019
  */
 int adventurerEffect(int currentPlayer, struct gameState *state){
-	printf("INSIDE ADVENTURER EFFECT\n");
 	int temphand[MAX_HAND];
 	int drawntreasure = 0;
 	int cardDrawn;
@@ -675,7 +674,7 @@ int adventurerEffect(int currentPlayer, struct gameState *state){
 		}
 		drawCard(currentPlayer, state);
 		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+		if (cardDrawn == copper && cardDrawn == silver && cardDrawn == gold)
 			drawntreasure++;
 		else{
 			temphand[z]=cardDrawn;
@@ -683,7 +682,7 @@ int adventurerEffect(int currentPlayer, struct gameState *state){
 			z++;
 		}
 	}
-	while(z>=0){
+	while(z-1>=0){
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 		z=z-1;
 	}
@@ -692,7 +691,7 @@ int adventurerEffect(int currentPlayer, struct gameState *state){
 /*
  * Jonah Siekmann 1/26/2019
  */
-int mineEffect(int choice1, int choice2, int currentPlayer, int handPos, struct gameState *state){
+int mineEffect(int currentPlayer, struct gameState *state, int choice2, int choice1, int handPos){
 	int j = state->hand[currentPlayer][choice1];	//store card we will trash
 
 	if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold){
@@ -724,7 +723,7 @@ int mineEffect(int choice1, int choice2, int currentPlayer, int handPos, struct 
 /*
  * Jonah Siekmann 1/26/2019
  */
-int feastEffect(int choice1, int currentPlayer, struct gameState *state){
+int feastEffect(int currentPlayer, struct gameState *state, int choice1, int choice2, int handPos){
 	//gain card with cost up to 5
 	int temphand[MAX_HAND];
 	//Backup hand
@@ -782,7 +781,7 @@ int feastEffect(int choice1, int currentPlayer, struct gameState *state){
 /*
  * Jonah Siekmann 1/26/2019
  */
-int councilroomEffect(int currentPlayer, int handPos, struct gameState *state){
+int councilroomEffect(int currentPlayer, struct gameState *state, int handPos){
 	//+4 Cards
 	for (int i = 0; i < 4; i++){
 		drawCard(currentPlayer, state);
@@ -832,16 +831,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			return adventurerEffect(currentPlayer, state);	
 		
 		case council_room:
-			return councilroomEffect(currentPlayer, handPos, state);
+			return councilroomEffect(currentPlayer, state, handPos);
 		
 		case feast:
-			return feastEffect(choice1, currentPlayer, state);
+			return feastEffect(currentPlayer, state, choice1, choice2, handPos);
 
 		case gardens:
 			return -1;
 			
 		case mine:
-			return mineEffect(choice1, choice2, currentPlayer, handPos, state);
+			return mineEffect(currentPlayer, state, choice1, choice2, handPos);
 			
 		case remodel:
 			j = state->hand[currentPlayer][choice1];	//store card we will trash
@@ -868,7 +867,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			return 0;
 		
 		case smithy:
-			return smithyEffect(currentPlayer, handPos, state);
+			return smithyEffect(currentPlayer, state, handPos);
 		
 		case village:
 			//+1 Card
