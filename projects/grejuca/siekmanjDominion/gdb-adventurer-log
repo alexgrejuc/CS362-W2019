@@ -1,0 +1,154 @@
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from cardtest3...done.
+(gdb) run cardtest3
+Starting program: /home/grejuca/CS362-W2019/projects/grejuca/siekmanjDominion/cardtest3 cardtest3
+
+Program received signal SIGSEGV, Segmentation fault.
+0x000000000040407e in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:680
+680				temphand[z]=cardDrawn;
+(gdb) p[Kbacktrace
+#0  0x000000000040407e in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:680
+#1  0x0000000000000000 in ?? ()
+(gdb) print z
+$1 = 15048
+(gdb) break adventurerEffect
+Breakpoint 1 at 0x403f22: file dominion.c, line 666.
+(gdb) run[K[K[Kv[Krun[K[K[Kc
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+(gdb) run
+Starting program: /home/grejuca/CS362-W2019/projects/grejuca/siekmanjDominion/cardtest3 cardtest3
+
+Breakpoint 1, adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:666
+666	int adventurerEffect(int currentPlayer, struct gameState *state){
+(gdb) step
+668		int drawntreasure = 0;
+(gdb) step
+670		int z = 0;
+(gdb) wcth[K[K[Katch z
+Hardware watchpoint 2: z
+(gdb) c
+Continuing.
+
+Hardware watchpoint 2: z
+
+Old value = 0
+New value = 1
+0x00000000004040c5 in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:682
+682				z++;
+(gdb) c
+Continuing.
+
+Hardware watchpoint 2: z
+
+Old value = 1
+New value = 2
+0x00000000004040c5 in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:682
+682				z++;
+(gdb) set z = 15045
+(gdb) s[Kstep
+671		while(drawntreasure<2){
+(gdb) 
+672			if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+(gdb) 
+675			drawCard(currentPlayer, state);
+(gdb) 
+drawCard (player=0, state=0x7fffffff7490) at dominion.c:532
+532		if (state->deckCount[player] <= 0){//Deck is empty
+(gdb) 
+572			int count = state->handCount[player];//Get current hand count for player
+(gdb) 
+578			deckCounter = state->deckCount[player];//Create holder for the deck count
+(gdb) 
+579			state->hand[player][count] = state->deck[player][deckCounter - 1];//Add card to the hand
+(gdb) 
+580			state->deckCount[player]--;
+(gdb) 
+581			state->handCount[player]++;//Increment hand count
+(gdb) 
+584		return 0;
+(gdb) 
+585	}
+(gdb) 
+adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:676
+676			cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+(gdb) print z
+$2 = 15045
+(gdb) c
+Continuing.
+
+Hardware watchpoint 2: z
+
+Old value = 15045
+New value = 15046
+0x00000000004040c5 in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:682
+682				z++;
+(gdb) c
+Continuing.
+
+Hardware watchpoint 2: z
+
+Old value = 15046
+New value = 15047
+0x00000000004040c5 in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:682
+682				z++;
+(gdb) c
+Continuing.
+
+Hardware watchpoint 2: z
+
+Old value = 15047
+New value = 15048
+0x00000000004040c5 in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:682
+682				z++;
+(gdb) c
+Continuing.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x000000000040407e in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:680
+680				temphand[z]=cardDrawn;
+(gdb) print z
+$3 = 15048
+(gdb) c
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+(gdb) clear
+(gdb) run
+Starting program: /home/grejuca/CS362-W2019/projects/grejuca/siekmanjDominion/cardtest3 cardtest3
+
+Breakpoint 1, adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:666
+666	int adventurerEffect(int currentPlayer, struct gameState *state){
+(gdb) set z = 15047
+(gdb) c
+Continuing.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x000000000040407e in adventurerEffect (currentPlayer=0, state=0x7fffffff7490) at dominion.c:680
+680				temphand[z]=cardDrawn;
+(gdb) print z
+$4 = 15048
+(gdb) printz[K temphand
+$5 = {4, 4, 4, 4, 4, 4, 4, 1, 4, 4, 1, 4, 1, 0 <repeats 31 times>, -1, -1, -1, -1, -1, -1, 10, -1, -1, 10, 8, 10, 10, 10, 10, 10, 8, -1, -1, 10, 30, 40, 46, 8, 8, 8, 10, 2, 0 <repeats 428 times>}
+(gdb) ru[K[Kc
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+(gdb) Quit

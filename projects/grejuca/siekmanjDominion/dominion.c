@@ -652,8 +652,8 @@ int getCost(int cardNumber)
  */
 int smithyEffect(int currentPlayer, struct gameState *state, int handPos){
 	//+3 Cards
-	for (int i = 0; i <= 3; i++){
-		drawCard(currentPlayer, state);
+	for (int i = 0; i < 3; i++){  // bug fixed by Alex Grejuc 
+		drawCard(currentPlayer, state); 
 	}
 	
 	//discard card from hand
@@ -674,7 +674,7 @@ int adventurerEffect(int currentPlayer, struct gameState *state){
 		}
 		drawCard(currentPlayer, state);
 		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-		if (cardDrawn == copper && cardDrawn == silver && cardDrawn == gold)
+		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold) // bug fixed by Alex Grejuc 
 			drawntreasure++;
 		else{
 			temphand[z]=cardDrawn;

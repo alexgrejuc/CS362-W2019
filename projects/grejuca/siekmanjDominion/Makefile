@@ -1,4 +1,4 @@
-CFLAGS= -Wall -fpic -coverage -lm -std=c99
+CFLAGS= -Wall -fpic -coverage -lm -std=c99 -g3
 EXE= playdom.exe playdom player player.exe unittest*[!.c] cardtest*[!.c] randomtestcard*[!.c]
 TEST_DEPS = dominion.o rngs.o test_helpers.o
 rngs.o: rngs.h rngs.c
