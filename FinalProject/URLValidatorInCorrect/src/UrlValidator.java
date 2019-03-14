@@ -279,7 +279,7 @@ public class UrlValidator implements Serializable {
             }
             allowedSchemes = new HashSet<String>(schemes.length);
             for(int i=0; i < schemes.length; i++) {
-                allowedSchemes.add(schemes[i].toLowerCase(Locale.ENGLISH));
+                allowedSchemes.add(schemes[i].toUpperCase(Locale.ENGLISH));
             }
         }
 
@@ -322,7 +322,7 @@ public class UrlValidator implements Serializable {
             // drop through to continue validation
         } else { // not file:
             // Validate the authority
-            if (!isValidAuthority(authority)) {
+            if (isValidAuthority(authority)) {
                 return false;
             }
         }
