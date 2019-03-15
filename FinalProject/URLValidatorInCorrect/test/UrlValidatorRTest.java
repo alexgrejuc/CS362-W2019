@@ -23,7 +23,7 @@ public class UrlValidatorRTest extends TestCase {
     String[] validSchemes = {
             "http://",
             "ftp://",
-            "h3t://"};
+            "https://"};
 
     String[] invalidSchemes = {
             "3ht://",
@@ -37,6 +37,7 @@ public class UrlValidatorRTest extends TestCase {
             "www.google.com.",
             "go.com",
             "go.au",
+            "go.cc",
             "0.0.0.0",
             "255.255.255.255",
             "255.com"};
@@ -48,7 +49,6 @@ public class UrlValidatorRTest extends TestCase {
             ".1.2.3.4",
             "go.a",
             "go.a1a",
-            "go.cc",
             "go.1aa",
             "aaa.",
             ".aaa",
@@ -91,37 +91,66 @@ public class UrlValidatorRTest extends TestCase {
             ""
     };
 
-
-
-
-
     public void testRandomValid(){
         System.out.println("\n******** TESTING VALID URLS RANDOMLY ********/");
-        UrlValidator urlVal = new UrlValidator(null, null, 0);
-        assertTrue(urlVal.isValid("http://www.google.com"));
+        //assertTrue(urlVal.isValid("http://www.google.com"));
         //assertTrue(urlVal.isValid("http://www.google.com/"));
-        /*
+
         for(int i = 0; i < NUM_RAND_TESTS; i++){
+            UrlValidator urlVal = new UrlValidator(null, null, 0);
             String scheme = validSchemes[new Random().nextInt(validSchemes.length)];
             String authority = validAuthorities[new Random().nextInt(validAuthorities.length)];
             String port = validPorts[new Random().nextInt(validPorts.length)];
             String path = validPaths[new Random().nextInt(validPaths.length)];
             String query = validQueries[new Random().nextInt(validQueries.length)];
             String url = scheme + authority + port + path + query;
-            assertTrue(urlVal.isValid(url));
+
+            assertTrue("URL should pass: " + url, urlVal.isValid(url));
         }
-        */
+
     }
 
     public void testRandomInvalid(){
         System.out.println("\n******** TESTING INVALID URLS RANDOMLY ********/");
+        UrlValidator urlVal = new UrlValidator();
 
         for(int i = 0; i < NUM_RAND_TESTS; i++){
+            int part = new Random().nextInt(3);
+            String scheme, authority, port, path, query;
+            if(part == 0) {
+                //System.out.println("using invalid scheme");
+                scheme = invalidSchemes[new Random().nextInt(invalidSchemes.length)];
+            }else{
+                scheme = validSchemes[new Random().nextInt(validSchemes.length)];
+            }
+            if(part == 1){
+                //System.out.println("using invalid auth");
 
+                authority = invalidAuthorities[new Random().nextInt(invalidAuthorities.length)];
+
+            }else{
+                authority = validAuthorities[new Random().nextInt(validAuthorities.length)];
+            }
+            if(part == 2){
+                //System.out.println("using invalid port");
+
+                port = invalidPorts[new Random().nextInt(invalidPorts.length)];
+            }else{
+                port = validPorts[new Random().nextInt(validPorts.length)];
+            }
+            if(part == 3){
+                //System.out.println("using invalid path");
+
+                path = invalidPaths[new Random().nextInt(invalidPaths.length)];
+            }else{
+                path = validPaths[new Random().nextInt(validPaths.length)];
+            }
+
+            query = validQueries[new Random().nextInt(validQueries.length)];
+
+            String url = scheme + authority + port + path + query;
+            //System.out.println("resulting url: " + url + "\n");
+            assertFalse("URL should not pass: " + url, urlVal.isValid(url));
         }
-
     }
-
-
-
 }
