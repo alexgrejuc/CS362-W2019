@@ -32,7 +32,7 @@ public class UrlValidatorTest extends TestCase {
    }
 
    @Override
-protected void setUp() {
+    protected void setUp() {
       for (int index = 0; index < testPartsIndex.length - 1; index++) {
          testPartsIndex[index] = 0;
       }
@@ -85,6 +85,7 @@ protected void setUp() {
       assertTrue(urlVal.isValid("http://www.google.com/"));
       int statusPerLine = 60;
       int printed = 0;
+      int total_tests = 0;
       if (printIndex)  {
          statusPerLine = 6;
       }
@@ -92,14 +93,16 @@ protected void setUp() {
           StringBuilder testBuffer = new StringBuilder();
          boolean expected = true;
          for (int testPartsIndexIndex = 0; testPartsIndexIndex < testPartsIndex.length; ++testPartsIndexIndex) {
-            int index = testPartsIndex[testPartsIndexIndex];
-            ResultPair[] part = (ResultPair[]) testObjects[testPartsIndexIndex];
-            testBuffer.append(part[index].item);
-            expected &= part[index].valid;
+             int index = testPartsIndex[testPartsIndexIndex];
+             ResultPair[] part = (ResultPair[]) testObjects[testPartsIndexIndex];
+             testBuffer.append(part[index].item);
+             expected &= part[index].valid;
          }
          String url = testBuffer.toString();
+         System.out.println("Made: " + url);
          boolean result = urlVal.isValid(url);
          assertEquals(url, expected, result);
+         total_tests++;
          if (printStatus) {
             if (printIndex) {
                System.out.print(testPartsIndextoString());
@@ -120,6 +123,7 @@ protected void setUp() {
       if (printStatus) {
          System.out.println();
       }
+      System.out.println("tests: " + total_tests);
    }
 
    public void testValidator202() {
@@ -578,7 +582,7 @@ protected void setUp() {
                               new ResultPair("", true)
    };
 
-   Object[] testUrlParts = {testUrlScheme, testUrlAuthority, testUrlPort, testPath, testUrlQuery};
+   Object[] testUrlParts =        {testUrlScheme, testUrlAuthority, testUrlPort, testPath,           testUrlQuery};
    Object[] testUrlPartsOptions = {testUrlScheme, testUrlAuthority, testUrlPort, testUrlPathOptions, testUrlQuery};
    int[] testPartsIndex = {0, 0, 0, 0, 0};
 
