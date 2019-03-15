@@ -19,25 +19,21 @@ public class UrlValidatorTest extends TestCase {
 
    
    
-   public void testManualTest()
-   {
-//You can use this function to implement your manual testing	   
+   public void testManualTest(){
+        //You can use this function to implement your manual testing
 	   
    }
    
    
-   public void testYourFirstPartition()
-   {
-	 //You can use this function to implement your First Partition testing	   
+   public void testRandomValid(){
 
    }
    
-   public void testYourSecondPartition(){
-		 //You can use this function to implement your Second Partition testing	   
+   public void testRandomInvalid(){
+
 
    }
-   //You need to create more test cases for your Partitions if you need to 
-   
+
    public void testIsValid()
    {
 	   //You can use this function for programming based testing

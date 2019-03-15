@@ -5,3 +5,8 @@ playdom
 player
 *.swp
 *.idea
+*intellij*
+*.dat
+*.txt
+*
+!*.java
