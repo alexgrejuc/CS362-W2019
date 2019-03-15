@@ -3,9 +3,6 @@
  *****************************************************************************/
 
 import junit.framework.TestCase;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class UrlValidatorPTest extends TestCase {
 
@@ -23,7 +20,7 @@ public class UrlValidatorPTest extends TestCase {
     public void testValidAssortedUrls()
     {
         String[] schemes = {"https"};
-        var v = new UrlValidator(schemes, 0);
+        var v = new UrlValidator(schemes, UrlValidator.ALLOW_ALL_SCHEMES);
 
         String[] urls = {
           "https://mail.google.com/mail/u/0/#inbox", "https://github.com/", "https://github.com/alexgrejuc/CS362-W2019",
@@ -40,6 +37,114 @@ public class UrlValidatorPTest extends TestCase {
         };
         for(String url : urls){
             assertTrue(v.isValid(url));
+        }
+    }
+
+    public void testMissingComponentUrls()
+    {
+        String[] schemes = {"https"};
+        var v = new UrlValidator(schemes, 0);
+
+        String[] urls = {
+                "mail.google.com/mail/u/0/#inbox",
+                "https://",
+                "https://alexgrejuc/CS362-W2019",
+        };
+        for(String url : urls){
+            assertFalse(v.isValid(url));
+        }
+    }
+
+    public void testInvalidSchemeUrls()
+    {
+        var v = new UrlValidator();
+
+        String[] urls = {
+                "ttps://mail.google.com/mail/u/0/#inbox",
+                "htttps://github.com/",
+                " ht tps://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal",
+                "ftps://pl.wikipedia.org/wiki/Wikipedia:Strona_g%C5%82%C3%B3wna",
+                "fttps://es.wikipedia.org/wiki/Wikipedia:Portada",
+                "https//www.google.com:65536/search?client=ubuntu&channel=fs&q=components+of+a+url&ie=utf-8&oe=utf-8",
+                "https:/es.wikipedia.org/wiki/Wikipedia:Portada"
+        };
+        for(String url : urls){
+            assertFalse(v.isValid(url));
+        }
+    }
+
+    public void testInvalidAuthUrls()
+    {
+        var v = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
+
+        String[] urls = {
+                "https://newsycombinatorcom/hide?id=19395578&auth=af91ad4fc34b79d64cf68047ac130a9d95ded610&goto=news",
+                "https://73.25.177.232.300/vote?id=19389983&how=up&auth=b52c059e09a9504c44c4f1e4ccdd0b1525b5233a&goto=news",
+                "https://1/a/5wcFx8M",
+                "https://73.25.177.2324/from?site=imgur.com",
+                "https://news..ycombinator.com/user?id=IFR",
+        };
+        for(String url : urls){
+            assertFalse(v.isValid(url));
+        }
+    }
+
+    public void testInvalidPortUrls()
+    {
+        var v = new UrlValidator();
+
+        String[] urls = {
+            "https://news.ycombinator.com:-1/user?id=IFR",
+            "https://news.ycombinator.com:-0/item?id=19389983",
+            "https://news.ycombinator.com:65536/hide?id=19389983&auth=b52c059e09a9504c44c4f1e4ccdd0b1525b5233a&goto=news",
+            "https://news.ycombinator.com:./vote?id=19391476&how=up&auth=d0790fd5798595fec45d57580c02d2f5a2ed2fe1&goto=news",
+            "https://motherboard.vice.com:ab/en_us/article/yw84q7/darpa-is-building-a-dollar10-million-open-source-secure-voting-system",
+            "https://news.ycombinator.com:1:2/from?site=vice.com",
+
+        };
+        for(String url : urls){
+            assertFalse(v.isValid(url));
+        }
+    }
+
+    public void testInvalidPathUrls()
+    {
+        var v = new UrlValidator();
+
+        String[] urls = {
+                "https://news.ycombinator.com/user//me",
+                "https://news.ycombinator.com/..",
+                "https://news.ycombinator.com/user\\\\a",
+                "https://news.ycombinator.com/user/#/",
+                "https://livestream.tesla.com/",
+        };
+        for(String url : urls){
+            assertFalse(v.isValid(url));
+        }
+    }
+
+    public void testInValidAssortedUrls()
+    {
+        String[] schemes = {"https"};
+        var v = new UrlValidator(schemes, 0);
+
+        String[] urls = {
+
+                "httpsgithub.com/alexgrejuc/CS362-W2019",
+                "https:/github.com/alexgrejuc/CS362-W2019/branches",
+                "https://oregonstate.instructure.com::70/courses/1706563/discussion_topics/8488233",
+                "https://-1.-1-.-1.-1.-1.-1?client=ubuntu&channel=fs&q=array+of+strings+java&ie=utf-8&oe=utf-8",
+                "https://.aaa/java/java-string-array-reference-java-5-for-loop-syntax",
+                "https://www.google.com:65536/search?client=ubuntu&channel=fs&q=components+of+a+url&ie=utf-8&oe=utf-8",
+                "https://www.wikipedia.org:70000000/",
+                "https://zh.wikipedia.org/wiki//Wikipedia:%E9%A6%96%E9%A1%B5",
+                "https://de.wikipedia.org/wiki/\\/Wikipedia:Hauptseite",
+                "https://fr.wikipedia.org/wiki/::://Wikip%C3%A9dia:Accueil_principal",
+                "https://pl.wikipedia.org/wiki/Wikipedia:Strona_g%C5%82%C3%B3wna/#",
+                "https://es.wikipedia.org/wiki/Wikipedia:Portada/.."
+        };
+        for(String url : urls){
+            assertFalse(v.isValid(url));
         }
     }
 
@@ -435,7 +540,7 @@ public class UrlValidatorPTest extends TestCase {
                 "https://www.google.com/intl/en_us/policies/privacy/?fg=1",
                 "https://www.google.com/intl/en_us/policies/terms/?fg=1",
         };
-        for(String url : urls){
+        for(String url : urls) {
             assertTrue(v.isValid(url));
         }
     }
@@ -445,10 +550,36 @@ public class UrlValidatorPTest extends TestCase {
         var v = new UrlValidator();
 
         String[] schemes = {"http", "https", "ftp"};
+
+        for (String scheme:schemes) assertTrue(v.isValidScheme(scheme));
     }
 
+    public void testInValidSchemes()
+    {
+        var v = new UrlValidator();
+
+        String[] schemes = {"httpz", "", "_ftp", null, "\\", "..."};
+
+        for (String scheme:schemes) assertFalse(v.isValidScheme(scheme));
+    }
+
+    public void testOptions(){
+        long options = UrlValidator.ALLOW_2_SLASHES + UrlValidator.ALLOW_LOCAL_URLS;
+
+        var v = new UrlValidator(options);
+
+        String[] urls = {
+            "http://linuxcommand.org//index.php",
+            "http://linuxcommand.org//lc3_learning_the_shell.php",
+            "http://localhost/",
+            "http://localhost:3000/",
+            "file:///~User/2ndFile.html"
+        };
+
+        for(String url : urls) {
+            assertTrue(v.isValid(url));
+        }
 
 
-
-
+    }
 }
