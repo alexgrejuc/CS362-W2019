@@ -93,8 +93,6 @@ public class UrlValidatorRTest extends TestCase {
 
     public void testRandomValid(){
         System.out.println("\n******** TESTING VALID URLS RANDOMLY ********/");
-        //assertTrue(urlVal.isValid("http://www.google.com"));
-        //assertTrue(urlVal.isValid("http://www.google.com/"));
 
         for(int i = 0; i < NUM_RAND_TESTS; i++){
             UrlValidator urlVal = new UrlValidator(null, null, 0);
@@ -110,37 +108,93 @@ public class UrlValidatorRTest extends TestCase {
 
     }
 
+    public void testRandomInvalidSchemes() {
+        System.out.println("\n******** TESTING INVALID SCHEMES RANDOMLY ********/");
+
+        for (int i = 0; i < NUM_RAND_TESTS; i++) {
+            UrlValidator urlVal = new UrlValidator();
+            String scheme = invalidSchemes[new Random().nextInt(invalidSchemes.length)];
+            String authority = validAuthorities[new Random().nextInt(validAuthorities.length)];
+            String port = validPorts[new Random().nextInt(validPorts.length)];
+            String path = validPaths[new Random().nextInt(validPaths.length)];
+            String query = validQueries[new Random().nextInt(validQueries.length)];
+            String url = scheme + authority + port + path + query;
+            assertFalse("URL should not pass: " + url, urlVal.isValid(url));
+
+        }
+    }
+    public void testRandomInvalidAuthorities() {
+        System.out.println("\n******** TESTING INVALID AUTHORITIES RANDOMLY ********/");
+
+        for (int i = 0; i < NUM_RAND_TESTS; i++) {
+            UrlValidator urlVal = new UrlValidator();
+            String scheme = validSchemes[new Random().nextInt(validSchemes.length)];
+            String authority = invalidAuthorities[new Random().nextInt(invalidAuthorities.length)];
+            String port = validPorts[new Random().nextInt(validPorts.length)];
+            String path = validPaths[new Random().nextInt(validPaths.length)];
+            String query = validQueries[new Random().nextInt(validQueries.length)];
+            String url = scheme + authority + port + path + query;
+            assertFalse("URL should not pass: " + url, urlVal.isValid(url));
+
+        }
+    }
+    public void testRandomInvalidPorts() {
+        System.out.println("\n******** TESTING INVALID PORTS RANDOMLY ********/");
+
+        for (int i = 0; i < NUM_RAND_TESTS; i++) {
+            UrlValidator urlVal = new UrlValidator();
+            String scheme = validSchemes[new Random().nextInt(validSchemes.length)];
+            String authority = validAuthorities[new Random().nextInt(validAuthorities.length)];
+            String port = invalidPorts[new Random().nextInt(invalidPorts.length)];
+            String path = validPaths[new Random().nextInt(validPaths.length)];
+            String query = validQueries[new Random().nextInt(validQueries.length)];
+            String url = scheme + authority + port + path + query;
+            assertFalse("URL should not pass: " + url, urlVal.isValid(url));
+
+        }
+    }
+    public void testRandomInvalidPaths() {
+        System.out.println("\n******** TESTING INVALID PATHS RANDOMLY ********/");
+        for (int i = 0; i < NUM_RAND_TESTS; i++) {
+            UrlValidator urlVal = new UrlValidator();
+            String scheme = validSchemes[new Random().nextInt(validSchemes.length)];
+            String authority = invalidAuthorities[new Random().nextInt(invalidAuthorities.length)];
+            String port = validPorts[new Random().nextInt(validPorts.length)];
+            String path = invalidPaths[new Random().nextInt(invalidPaths.length)];
+            String query = validQueries[new Random().nextInt(validQueries.length)];
+            String url = scheme + authority + port + path + query;
+            assertFalse("URL should not pass: " + url, urlVal.isValid(url));
+
+        }
+    }
+
     public void testRandomInvalid(){
         System.out.println("\n******** TESTING INVALID URLS RANDOMLY ********/");
         UrlValidator urlVal = new UrlValidator();
 
         for(int i = 0; i < NUM_RAND_TESTS; i++){
-            int part = new Random().nextInt(3);
             String scheme, authority, port, path, query;
-            if(part == 0) {
-                //System.out.println("using invalid scheme");
+            int valid = 1;
+            if(new Random().nextInt(2) == 0) {
                 scheme = invalidSchemes[new Random().nextInt(invalidSchemes.length)];
+                valid = 0;
             }else{
                 scheme = validSchemes[new Random().nextInt(validSchemes.length)];
             }
-            if(part == 1){
-                //System.out.println("using invalid auth");
-
+            if(new Random().nextInt(2) == 0) {
+                valid = 0;
                 authority = invalidAuthorities[new Random().nextInt(invalidAuthorities.length)];
-
             }else{
                 authority = validAuthorities[new Random().nextInt(validAuthorities.length)];
             }
-            if(part == 2){
-                //System.out.println("using invalid port");
-
+            if(new Random().nextInt(2) == 0) {
+                valid = 0;
                 port = invalidPorts[new Random().nextInt(invalidPorts.length)];
             }else{
                 port = validPorts[new Random().nextInt(validPorts.length)];
             }
-            if(part == 3){
-                //System.out.println("using invalid path");
-
+            if(new Random().nextInt(2) == 0) {
+                valid = 0;
                 path = invalidPaths[new Random().nextInt(invalidPaths.length)];
             }else{
                 path = validPaths[new Random().nextInt(validPaths.length)];
@@ -149,8 +203,8 @@ public class UrlValidatorRTest extends TestCase {
             query = validQueries[new Random().nextInt(validQueries.length)];
 
             String url = scheme + authority + port + path + query;
-            //System.out.println("resulting url: " + url + "\n");
-            assertFalse("URL should not pass: " + url, urlVal.isValid(url));
+            if(valid == 0)
+                assertFalse("URL should not pass: " + url, urlVal.isValid(url));
         }
     }
 }
