@@ -19,8 +19,7 @@ public class UrlValidatorPTest extends TestCase {
 
     public void testValidAssortedUrls()
     {
-        String[] schemes = {"https"};
-        var v = new UrlValidator(schemes, UrlValidator.ALLOW_ALL_SCHEMES);
+        var v = new UrlValidator();
 
         String[] urls = {
           "https://mail.google.com/mail/u/0/#inbox", "https://github.com/", "https://github.com/alexgrejuc/CS362-W2019",
@@ -42,8 +41,7 @@ public class UrlValidatorPTest extends TestCase {
 
     public void testMissingComponentUrls()
     {
-        String[] schemes = {"https"};
-        var v = new UrlValidator(schemes, 0);
+        var v = new UrlValidator();
 
         String[] urls = {
                 "mail.google.com/mail/u/0/#inbox",
@@ -93,8 +91,11 @@ public class UrlValidatorPTest extends TestCase {
     {
         var v = new UrlValidator();
 
+        String maxIntPortUrl = "https://news.ycombinator.com:" + Integer.MAX_VALUE + "/user?id=IFR";
+
         String[] urls = {
             "https://news.ycombinator.com:-1/user?id=IFR",
+            maxIntPortUrl,
             "https://news.ycombinator.com:-0/item?id=19389983",
             "https://news.ycombinator.com:65536/hide?id=19389983&auth=b52c059e09a9504c44c4f1e4ccdd0b1525b5233a&goto=news",
             "https://news.ycombinator.com:./vote?id=19391476&how=up&auth=d0790fd5798595fec45d57580c02d2f5a2ed2fe1&goto=news",
@@ -369,8 +370,7 @@ public class UrlValidatorPTest extends TestCase {
 
     public void testValidGoogleUrls()
     {
-        String[] schemes = {"https"};
-        var v = new UrlValidator(schemes, 0);
+        var v = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
 
         String[] urls = {
                 "https://support.google.com/websearch/answer/181196?hl=en",
@@ -547,7 +547,7 @@ public class UrlValidatorPTest extends TestCase {
 
     public void testValidSchemes()
     {
-        var v = new UrlValidator();
+        var v = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
 
         String[] schemes = {"http", "https", "ftp"};
 
